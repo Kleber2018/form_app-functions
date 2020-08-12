@@ -14,18 +14,64 @@ admin.initializeApp();
 
 // app.use(cors({ origin: true }));
 
+const nodemailer = require('nodemailer');
+const cors = require('cors')({origin: true});
+
 const db = admin.firestore();
 // const empresaService = require('./services/empresa.service');
+
+
+
+let url = "smtps://deliverysamasapp%40gmail.com:"+encodeURIComponent('csztmuznaqymzyis') + "@smtp.gmail.com:465";
+let transporter = nodemailer.createTransport(url);
+
+// exports.enviarEmail = functions.https.onRequest((req, res) => {
+exports.EnviandoEmail = functions.firestore.document('/solicitacao/{pushId}').onUpdate((snapshot, context) => {
+        // cors(req, res, () => {
+           let remetente = '"Kleber" <dev.kleber@gmail.com>';
+           let assunto = 'assunto teste'
+            let destinatarios = 'klebers@alunos.utfpr.edu.br'
+            let corpo = 'corpo teste';
+           let corpoHtml = 'corpo html';
+
+            // let assunto = req.body['assunto teste'];
+            // let destinatarios = req.body['dev.kleber@gmail.com']; // lista de e-mails destinatarios separados por ,
+            // let corpo = req.body['corpo do e-mail'];
+            // let corpoHtml = req.body['corpoHtml do e-mail'];
+
+
+
+            let email = {
+                from: remetente,
+                to: destinatarios,
+                subject: assunto,
+                text: corpo,
+                html: corpoHtml
+            };
+
+            transporter.sendMail(email, (error, info) => {
+                if (error) {
+                    return console.log(error);
+                }
+                console.log('Mensagem %s enviada: %s', info.messageId, info.response);
+            });
+        // });
+});
+
+
+
+
+
+
+
+// função chamada para buscar no bd as imagens e baixar como Base64 para utilizar no pdfMaker
+
 const imageToBase64 = require('image-to-base64');
-
-
 
 exports.solicitacaoImgBase64 = functions.https.onCall(async (data, context) => {
     // console.log('context1111111114:', context.rawRequest.ip);
     // console.log('context1111111333:', context.rawRequest.headers["user-agent"]);
-    console.log('dentro');
     console.log('dentro do pagamento saddsad ada', context.auth);
-    console.log('dadadasdadasd', data);
     if (!context.auth) {
         throw new functions.https.HttpsError('failed-precondition', 'Você não está autenticado');
     } else {
@@ -36,7 +82,6 @@ exports.solicitacaoImgBase64 = functions.https.onCall(async (data, context) => {
                 console.log('No such document!');
                 return null
                 } else {
-                // console.log('Empresa data:', doc.data());
                 return doc.data();
                 }
             })
@@ -81,44 +126,10 @@ exports.solicitacaoImgBase64 = functions.https.onCall(async (data, context) => {
                         imagens.push(await imageToBase64(solicitacao.img[5]));
                         break;
                 }
-                // return await imageToBase64(solicitacao.img[0])
-                //         .then((response) => { 
-                //             console.log(response); 
-                //             return response;
-                //             })
-                //         .catch(
-                //             (error) => {
-                //                 console.log(error); //Exepection error....
-                //             }
-                //         )
-
-                // for (let index = 0; index < 5; index++) {
-                //     imagens.push('vazio');
-                // }
-                // console.log('linha 53', imagens)
-                //     for (let index = 0; index < solicitacao.img.length; index++) {
-                //             imagens[index] =  imageToBase64(solicitacao.img[index])
-                //                 // eslint-disable-next-line no-loop-func
-                //                 .then((response) => {
-                //                     console.log(response); 
-                //                     return response;
-                //                     })
-                //                 .catch(
-                //                     // eslint-disable-next-line no-loop-func
-                //                     (error) => {
-                //                         console.log(error); //Exepection error....
-                //                     }
-                //                 )
-                //                 console.log('loop', imagens[index])
-                //    }
-                //     console.log('linha 57', imagens)
                     return imagens;
                 } else {
                     return imagens;
                 }
-            
-            // var idPedido = await pedidoService.insertNovoPedido(data.pedido, db)
-          
         } catch (error) {
             return {cod: 'erro', descricao: 'Erro no salvar cach', error};
         }
