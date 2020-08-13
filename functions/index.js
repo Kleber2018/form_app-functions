@@ -30,7 +30,7 @@ exports.EnviandoEmail = functions.firestore.document('/solicitacao/{pushId}').on
         // cors(req, res, () => {
            let remetente = '"Kleber" <dev.kleber@gmail.com>';
            let assunto = 'assunto teste'
-            let destinatarios = 'klebers@alunos.utfpr.edu.br'
+            let destinatarios = 'klebers@alunos.utfpr.edu.br, dev.kleber@gmail.com'
             let corpo = 'corpo teste';
            let corpoHtml = 'corpo html';
 
@@ -46,7 +46,11 @@ exports.EnviandoEmail = functions.firestore.document('/solicitacao/{pushId}').on
                 to: destinatarios,
                 subject: assunto,
                 text: corpo,
-                html: corpoHtml
+                html: corpoHtml,
+                attachments: [{ // Basta incluir esta chave e listar os anexos
+                    filename: 'teste.pdf', // O nome que aparecerá nos anexos
+                    path: 'https://firebasestorage.googleapis.com/v0/b/sse-eletromecanica.appspot.com/o/ASE.pdf?alt=media&token=19c3a7b2-f4ed-4669-97ca-5af9267519d0' // O arquivo será lido neste local ao ser enviado
+                }]
             };
 
             transporter.sendMail(email, (error, info) => {
