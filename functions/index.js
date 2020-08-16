@@ -23,31 +23,61 @@ exports.EnviandoEmail = functions.firestore.document('/question/{pushId}').onCre
 
        console.log('snapshot chegando', snapshot.data());
     console.log('context chegando', context);
+    console.log('antes do if', snapshot.data().opcao)
         let anexo;
-        if(snapshot.data.opcao === 1){
-            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção1.pdf?alt=media&token=afe77b81-893d-4737-addd-86bb936c2bcb'
-        } else if(snapshot.data.opcao === 2){
-            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção2.pdf?alt=media&token=6388dcbc-d6e4-4a5d-8621-478f7c56fc2c'
-        } else if(snapshot.data.opcao === 3){
-            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção3.pdf?alt=media&token=d89a9091-050a-414e-93f8-79f01793a3ca'
-        } else if(snapshot.data.opcao === 4){
-            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção4.pdf?alt=media&token=21096122-4b68-4c8b-a0c6-789e7c844752'
-        } else if(snapshot.data.opcao === 5){
-            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção5.pdf?alt=media&token=6e521d79-0034-4c88-a8bd-f2ff8da936f7'
-        } else if(snapshot.data.opcao === 6){
-            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção6.pdf?alt=media&token=472546e5-0300-4b19-bef7-12a051927430'
-        } else if(snapshot.data.opcao === 7){
-            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção7.pdf?alt=media&token=534dfbb5-42b7-4836-a4d1-ee0418505150'
-        } else if(snapshot.data.opcao === 8){
-            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção8.pdf?alt=media&token=364fa46a-6f8b-4a2d-94b4-90849f869375'
-        } else if(snapshot.data.opcao === 9){
-            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção9.pdf?alt=media&token=7c78a924-56b0-49e0-994f-6176c99ceccf'
-        } else if(snapshot.data.opcao === 10){
-            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção10.pdf?alt=media&token=3f5b4ba3-712c-46e3-a8b8-d9d0c5085400'
-        } else if(snapshot.data.opcao === 11){
-            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção11.pdf?alt=media&token=3c55cdea-f3ed-4be2-befa-95dd9caa3866'
-        } else if(snapshot.data.opcao === 12){
-            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção12.pdf?alt=media&token=8990e64e-b103-48bd-8fde-efd18f81bbb0'
+        if(snapshot.data().opcao === 1){
+            anexo = [{ // Basta incluir esta chave e listar os anexos
+                filename: 'diagnóstico1.pdf', // O nome que aparecerá nos anexos
+                path: './assets/diagnóstico-opção1-min.pdf' // O arquivo será lido neste local ao ser enviado
+            }]        } else if(snapshot.data().opcao === 2){
+            anexo = [{ // Basta incluir esta chave e listar os anexos
+                filename: 'diagnóstico2.pdf', // O nome que aparecerá nos anexos
+                path: './assets/diagnóstico-opção2-min.pdf' // O arquivo será lido neste local ao ser enviado
+            }]        } else if(snapshot.data().opcao === 3){
+            anexo = [{ // Basta incluir esta chave e listar os anexos
+                filename: 'diagnóstico3.pdf', // O nome que aparecerá nos anexos
+                path: './assets/diagnóstico-opção3-min.pdf' // O arquivo será lido neste local ao ser enviado
+            }]        } else if(snapshot.data().opcao === 4){
+            anexo = [{ // Basta incluir esta chave e listar os anexos
+                filename: 'diagnóstico4.pdf', // O nome que aparecerá nos anexos
+                path: './assets/diagnóstico-opção4-min.pdf' // O arquivo será lido neste local ao ser enviado
+            }]        } else if(snapshot.data().opcao === 5){
+            anexo = [{ // Basta incluir esta chave e listar os anexos
+                filename: 'diagnóstico5.pdf', // O nome que aparecerá nos anexos
+                path: './assets/diagnóstico-opção5-min.pdf' // O arquivo será lido neste local ao ser enviado
+            }]        } else if(snapshot.data().opcao === 6){
+            anexo = [{ // Basta incluir esta chave e listar os anexos
+                filename: 'diagnóstico6.pdf', // O nome que aparecerá nos anexos
+                path: './assets/diagnóstico-opção6-min.pdf' // O arquivo será lido neste local ao ser enviado
+            }]        } else if(snapshot.data().opcao === 7){
+            anexo = [{ // Basta incluir esta chave e listar os anexos
+                filename: 'diagnóstico7.pdf', // O nome que aparecerá nos anexos
+                path: './assets/diagnóstico-opção7-min.pdf' // O arquivo será lido neste local ao ser enviado
+            }]        } else if(snapshot.data().opcao === 8){
+            anexo = [{ // Basta incluir esta chave e listar os anexos
+                filename: 'diagnóstico8.pdf', // O nome que aparecerá nos anexos
+                path: './assets/diagnóstico-opção8-min.pdf' // O arquivo será lido neste local ao ser enviado
+            }]        } else if(snapshot.data().opcao === 9){
+            anexo = [{ // Basta incluir esta chave e listar os anexos
+                filename: 'diagnóstico9.pdf', // O nome que aparecerá nos anexos
+                path: './assets/diagnóstico-opção9-min.pdf' // O arquivo será lido neste local ao ser enviado
+            }]        } else if(snapshot.data().opcao === 10){
+            anexo = [{ // Basta incluir esta chave e listar os anexos
+                filename: 'diagnóstico10.pdf', // O nome que aparecerá nos anexos
+                path: './assets/diagnóstico-opção10-min.pdf' // O arquivo será lido neste local ao ser enviado
+            }]
+        } else if(snapshot.data().opcao === 11){
+            anexo = [{ // Basta incluir esta chave e listar os anexos
+                filename: 'diagnóstico11.pdf', // O nome que aparecerá nos anexos
+                path: './assets/diagnóstico-opção11-min.pdf' // O arquivo será lido neste local ao ser enviado
+            }]
+        } else if(snapshot.data().opcao === 12){
+            anexo = [{ // Basta incluir esta chave e listar os anexos
+                filename: 'diagnóstico12.pdf', // O nome que aparecerá nos anexos
+                path: './assets/diagnóstico-opção12-min.pdf' // O arquivo será lido neste local ao ser enviado
+            }]
+        } else {
+            console.log('nenhum if atendeu');
         }
 
 
@@ -68,15 +98,7 @@ exports.EnviandoEmail = functions.firestore.document('/question/{pushId}').onCre
         console.log('destinatario', destinatarios)
         // cors(req, res, () => {
 
-          //  let corpo = 'corpo teste';
-
-
-            // let assunto = req.body['assunto teste'];
-            // let destinatarios = req.body['dev.kleber@gmail.com']; // lista de e-mails destinatarios separados por ,
-            // let corpo = req.body['corpo do e-mail'];
-            // let corpoHtml = req.body['corpoHtml do e-mail'];
-
-
+            console.log('anexo', anexo)
 
             let email = {
                 from: remetente,
@@ -84,17 +106,17 @@ exports.EnviandoEmail = functions.firestore.document('/question/{pushId}').onCre
                 subject: assunto,
                 //text: corpo,
                 html: corpoHtml,
-                attachments: [{ // Basta incluir esta chave e listar os anexos
-                    filename: 'diagnóstico.pdf', // O nome que aparecerá nos anexos
-                    path: anexo // O arquivo será lido neste local ao ser enviado
-                }]
+                attachments: anexo
             };
-
+            console.log(email)
             transporter.sendMail(email, (error, info) => {
                 if (error) {
                     return console.log(error);
+                } else {
+                    console.log('Mensagem %s enviada: %s', info.messageId, info.response);
+                    return info.response;
                 }
-                console.log('Mensagem %s enviada: %s', info.messageId, info.response);
+
             });
         // });
 });
