@@ -4,12 +4,6 @@ const admin = require('firebase-admin');
 const Sentry = require('@sentry/node');
 // Sentry.init({ dsn: 'https://ea59a4c624de44f79e07c8a2001fea40@o362766.ingest.sentry.io/5196753' });
 
-// const express = require('express');
-// const app = express();
-// const cors = require('cors');
-//https://expressjs.com/en/resources/middleware/cors.html
-
-
 admin.initializeApp();
 
 // app.use(cors({ origin: true }));
@@ -25,14 +19,57 @@ const db = admin.firestore();
 let url = "smtps://deliverysamasapp%40gmail.com:"+encodeURIComponent('csztmuznaqymzyis') + "@smtp.gmail.com:465";
 let transporter = nodemailer.createTransport(url);
 
-// exports.enviarEmail = functions.https.onRequest((req, res) => {
-exports.EnviandoEmail = functions.firestore.document('/solicitacao/{pushId}').onUpdate((snapshot, context) => {
+exports.EnviandoEmail = functions.firestore.document('/question/{pushId}').onCreate((snapshot, context) => {
+
+       console.log('snapshot chegando', snapshot.data());
+    console.log('context chegando', context);
+        let anexo;
+        if(snapshot.data.opcao === 1){
+            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção1.pdf?alt=media&token=afe77b81-893d-4737-addd-86bb936c2bcb'
+        } else if(snapshot.data.opcao === 2){
+            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção2.pdf?alt=media&token=6388dcbc-d6e4-4a5d-8621-478f7c56fc2c'
+        } else if(snapshot.data.opcao === 3){
+            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção3.pdf?alt=media&token=d89a9091-050a-414e-93f8-79f01793a3ca'
+        } else if(snapshot.data.opcao === 4){
+            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção4.pdf?alt=media&token=21096122-4b68-4c8b-a0c6-789e7c844752'
+        } else if(snapshot.data.opcao === 5){
+            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção5.pdf?alt=media&token=6e521d79-0034-4c88-a8bd-f2ff8da936f7'
+        } else if(snapshot.data.opcao === 6){
+            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção6.pdf?alt=media&token=472546e5-0300-4b19-bef7-12a051927430'
+        } else if(snapshot.data.opcao === 7){
+            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção7.pdf?alt=media&token=534dfbb5-42b7-4836-a4d1-ee0418505150'
+        } else if(snapshot.data.opcao === 8){
+            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção8.pdf?alt=media&token=364fa46a-6f8b-4a2d-94b4-90849f869375'
+        } else if(snapshot.data.opcao === 9){
+            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção9.pdf?alt=media&token=7c78a924-56b0-49e0-994f-6176c99ceccf'
+        } else if(snapshot.data.opcao === 10){
+            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção10.pdf?alt=media&token=3f5b4ba3-712c-46e3-a8b8-d9d0c5085400'
+        } else if(snapshot.data.opcao === 11){
+            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção11.pdf?alt=media&token=3c55cdea-f3ed-4be2-befa-95dd9caa3866'
+        } else if(snapshot.data.opcao === 12){
+            anexo = 'https://firebasestorage.googleapis.com/v0/b/form-dissertacao.appspot.com/o/diagnóstico-opção12.pdf?alt=media&token=8990e64e-b103-48bd-8fde-efd18f81bbb0'
+        }
+
+
+
+    let corpoHtml = "Olá," +
+                "<br><br>Muito obrigada pela participação! Suas respostas com certeza ajudarão muito a formação do conhecimento científico!" +
+                "<br><br>Como o prometido, segue em anexo o seu diagnóstico sobre a transformação das informações para a tomada de decisão de marketing na sua empresa. " +
+                "<br><br>Ele foi preparado com muito carinho e com a intenção de devolver um pouco do conhecimento gerado na Academia. Espero que goste e que te ajude a dar mais clareza sobre seus processos." +
+                "<br><br>Se tiver alguma dúvida ou se quiser conversar mais sobre como melhorar suas ações de marketing responda este e-mail. Eu terei o maior prazer em trocar uma ideia com você." +
+                "<br><br>Abraços, \n" +
+                "<br>Marina Proença\n" +
+                "<br>Publicitária e Mestranda em Marketing na UFPR.\n";
+
+            let assunto = 'Pesquisa - Marketing na sua Empresa'
+            let remetente = '"Kleber" <dev.kleber@gmail.com>';
+            let destinatarios = snapshot.data().grupo8.pergunta10.resposta
+
+        console.log('destinatario', destinatarios)
         // cors(req, res, () => {
-           let remetente = '"Kleber" <dev.kleber@gmail.com>';
-           let assunto = 'assunto teste'
-            let destinatarios = 'klebers@alunos.utfpr.edu.br, dev.kleber@gmail.com'
-            let corpo = 'corpo teste';
-           let corpoHtml = 'corpo html';
+
+          //  let corpo = 'corpo teste';
+
 
             // let assunto = req.body['assunto teste'];
             // let destinatarios = req.body['dev.kleber@gmail.com']; // lista de e-mails destinatarios separados por ,
@@ -45,11 +82,11 @@ exports.EnviandoEmail = functions.firestore.document('/solicitacao/{pushId}').on
                 from: remetente,
                 to: destinatarios,
                 subject: assunto,
-                text: corpo,
+                //text: corpo,
                 html: corpoHtml,
                 attachments: [{ // Basta incluir esta chave e listar os anexos
-                    filename: 'teste.pdf', // O nome que aparecerá nos anexos
-                    path: 'https://firebasestorage.googleapis.com/v0/b/sse-eletromecanica.appspot.com/o/ASE.pdf?alt=media&token=19c3a7b2-f4ed-4669-97ca-5af9267519d0' // O arquivo será lido neste local ao ser enviado
+                    filename: 'diagnóstico.pdf', // O nome que aparecerá nos anexos
+                    path: anexo // O arquivo será lido neste local ao ser enviado
                 }]
             };
 
@@ -64,78 +101,3 @@ exports.EnviandoEmail = functions.firestore.document('/solicitacao/{pushId}').on
 
 
 
-
-
-
-
-// função chamada para buscar no bd as imagens e baixar como Base64 para utilizar no pdfMaker
-
-const imageToBase64 = require('image-to-base64');
-
-exports.solicitacaoImgBase64 = functions.https.onCall(async (data, context) => {
-    // console.log('context1111111114:', context.rawRequest.ip);
-    // console.log('context1111111333:', context.rawRequest.headers["user-agent"]);
-    console.log('dentro do pagamento saddsad ada', context.auth);
-    if (!context.auth) {
-        throw new functions.https.HttpsError('failed-precondition', 'Você não está autenticado');
-    } else {
-        try {
-        var solicitacao =  await db.collection('solicitacao').doc(data.uid).get()
-            .then(doc => {
-                if (!doc.exists) {
-                console.log('No such document!');
-                return null
-                } else {
-                return doc.data();
-                }
-            })
-            .catch(err => {
-                console.log('Error getting document', err);
-            });  
-            var imagens = [''];
-            
-            if(solicitacao.img){
-                switch(solicitacao.img.length){
-                    case 1: 
-                        imagens[0] = await imageToBase64(solicitacao.img[0]);
-                        break;
-                    case 2:
-                        imagens[0] = await imageToBase64(solicitacao.img[0]);
-                        imagens.push(await imageToBase64(solicitacao.img[1]));
-                        break;
-                    case 3:
-                        imagens[0] = await imageToBase64(solicitacao.img[0]);
-                        imagens.push(await imageToBase64(solicitacao.img[1]));
-                        imagens.push(await imageToBase64(solicitacao.img[2]));
-                        break;
-                    case 4:
-                        imagens[0] = await imageToBase64(solicitacao.img[0]);
-                        imagens.push(await imageToBase64(solicitacao.img[1]));
-                        imagens.push(await imageToBase64(solicitacao.img[2]));
-                        imagens.push(await imageToBase64(solicitacao.img[3]));
-                        break;
-                    case 5:
-                        imagens[0] = await imageToBase64(solicitacao.img[0]);
-                        imagens.push(await imageToBase64(solicitacao.img[1]));
-                        imagens.push(await imageToBase64(solicitacao.img[2]));
-                        imagens.push(await imageToBase64(solicitacao.img[3]));
-                        imagens.push(await imageToBase64(solicitacao.img[4]));
-                        break;
-                    default:
-                        imagens[0] = await imageToBase64(solicitacao.img[0])
-                        imagens.push(await imageToBase64(solicitacao.img[1]));
-                        imagens.push(await imageToBase64(solicitacao.img[2]));
-                        imagens.push(await imageToBase64(solicitacao.img[3]));
-                        imagens.push(await imageToBase64(solicitacao.img[4]));
-                        imagens.push(await imageToBase64(solicitacao.img[5]));
-                        break;
-                }
-                    return imagens;
-                } else {
-                    return imagens;
-                }
-        } catch (error) {
-            return {cod: 'erro', descricao: 'Erro no salvar cach', error};
-        }
-    }
-});
