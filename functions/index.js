@@ -16,7 +16,7 @@ const db = admin.firestore();
 
 
 
-let url = "smtps://deliverysamasapp%40gmail.com:"+encodeURIComponent('csztmuznaqymzyis') + "@smtp.gmail.com:465";
+let url = "smtps://marina.proenca23%40gmail.com:"+encodeURIComponent('') + "@smtp.gmail.com:465";
 let transporter = nodemailer.createTransport(url);
 
 exports.EnviandoEmail = functions.firestore.document('/question/{pushId}').onCreate((snapshot, context) => {
@@ -92,7 +92,7 @@ exports.EnviandoEmail = functions.firestore.document('/question/{pushId}').onCre
                 "<br>Publicitária e Mestranda em Marketing na UFPR.\n";
 
             let assunto = 'Pesquisa - Marketing na sua Empresa'
-            let remetente = '"Kleber" <dev.kleber@gmail.com>';
+            let remetente = '"Marina" <marina.proenca23@gmail.com>';
             let destinatarios = snapshot.data().grupo8.pergunta10.resposta
 
         console.log('destinatario', destinatarios)
